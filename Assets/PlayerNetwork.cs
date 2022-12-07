@@ -8,9 +8,19 @@ using Random = UnityEngine.Random;
 public class PlayerNetwork : NetworkBehaviour
 {
     private NetworkVariable<int> _randomNumber = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+    public override void OnNetworkSpawn()
+    {
+        _randomNumber.OnValueChanged += (int previousValue, int newValue) =>
+        {
+            Debug.Log($"{OwnerClientId} ; RandomNumber : {_randomNumber.Value}");
+        };
+        
+    }
+    
     private void Update()
     {
-        Debug.Log($"{OwnerClientId} ; RandomNumber : {_randomNumber.Value}");
+        
         if (!IsOwner) return;
         if (Input.GetKeyDown(KeyCode.T))
         {
