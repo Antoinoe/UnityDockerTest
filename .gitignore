@@ -1,6 +1,7 @@
 syntax: glob
 Library
 Temp
+*.log
 *.userprefs
 *.csproj
 *.unityproj

@@ -3,12 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class PlayerNetwok : NetworkBehaviour
+public class PlayerNetwork : NetworkBehaviour
 {
+    private NetworkVariable<int> _randomNumber = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     private void Update()
     {
+        Debug.Log($"{OwnerClientId} ; RandomNumber : {_randomNumber.Value}");
         if (!IsOwner) return;
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            _randomNumber.Value = Random.Range(1, 100);
+        }
         var moveDir = new Vector3(0,0,0);
         if (Input.GetKey(KeyCode.Z)) moveDir.z = 1.0f;
         if (Input.GetKey(KeyCode.S)) moveDir.z = -1.0f;
